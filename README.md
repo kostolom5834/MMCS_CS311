@@ -1,6 +1,6 @@
 ### Как использовать этот репозиторий
 
-git clone --recurse-submodules <репозиторий> 
+git clone --recurse-submodules https://github.com/kostolom5834/MMCS_CS311 git config --global user.name "Babiyan Grigorij" git config --global user.email "babian.grigorij@yandex.ru"
 
 ### Как запустить тесты из репозитория
 
