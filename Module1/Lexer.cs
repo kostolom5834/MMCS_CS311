@@ -58,10 +58,12 @@ namespace Lexer
 
         protected System.Text.StringBuilder intString;
         public int parseResult = 0;
-		bool intParser = false;
-		int cur;
+		Boolean isNegative = false;
 
-        public IntLexer(string input)
+		public bool IsNegative { get => IsNegative1; set => IsNegative1 = value; }
+		public bool IsNegative1 { get => isNegative; set => isNegative = value; }
+
+		public IntLexer(string input)
             : base(input)
         {
             intString = new System.Text.StringBuilder();
@@ -72,17 +74,14 @@ namespace Lexer
             NextCh();
             if (currentCh == '+' || currentCh == '-')
             {
-                NextCh();
-				if (currentCh == '+')
-					intParser = true;
-				else 
-					if (currentCh == '-')
-						intParser = false;
+				if (currentCh == '-')
+				{ IsNegative = true; }
+				NextCh();
             }
         
             if (char.IsDigit(currentCh))
             {
-				cur = currentCh * 10 + int.Parse(currentCh.ToString());
+				parseResult = parseResult * 10 + int.Parse(currentCh.ToString());
 				NextCh();
             }
             else
@@ -92,6 +91,7 @@ namespace Lexer
 
 			while (char.IsDigit(currentCh))
 			{
+				parseResult = parseResult * 10 + int.Parse(currentCh.ToString());
 				NextCh();
 			}	
 
@@ -101,6 +101,10 @@ namespace Lexer
                 Error();
             }
 
+			if (IsNegative == true)
+			{
+				parseResult *= -1;
+			}
             return true;
 
         }
@@ -233,23 +237,58 @@ namespace Lexer
     {
         private StringBuilder builder;
         private double parseResult;
+		Boolean isNegative = false;
+		bool tt = true;
 
         public double ParseResult
         {
             get { return parseResult; }
-
         }
 
         public DoubleLexer(string input)
             : base(input)
         {
             builder = new StringBuilder();
-        }
 
-        public override bool Parse()
+		}
+
+		public override bool Parse()
         {
-            throw new NotImplementedException();
-        }
+			
+			NextCh();
+			if (currentCh == '+' || currentCh == '-')
+			{
+				if (currentCh == '-')
+				{ isNegative = true; }
+				NextCh();
+			}
+			while (char.IsDigit(currentCh))
+			{
+				parseResult = parseResult * 10 + int.Parse(currentCh.ToString());
+				NextCh();
+				if (char.IsDigit(currentCh))
+				{
+					if (tt)	{
+						parseResult = parseResult * 10 + int.Parse(currentCh.ToString());
+					}
+					else
+						parseResult = parseResult / 10 + int.Parse(currentCh.ToString());
+					NextCh();
+				}
+				else
+					if (currentCh == '.' && tt)	{
+					tt = false;	}
+				else
+				{
+					Error();
+				}
+			}
+			if (isNegative == true)
+			{
+				parseResult *= -1;
+			}
+			return true;
+		}
        
     }
 
