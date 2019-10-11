@@ -262,27 +262,31 @@ namespace Lexer
 				{ isNegative = true; }
 				NextCh();
 			}
+			NextCh();
 			while (char.IsDigit(currentCh))
 			{
-				parseResult = parseResult * 10 + int.Parse(currentCh.ToString());
-				NextCh();
 				if (char.IsDigit(currentCh))
 				{
-					if (tt)	{
+					if (tt)
 						parseResult = parseResult * 10 + int.Parse(currentCh.ToString());
-					}
-					else
-						parseResult = parseResult / 10 + int.Parse(currentCh.ToString());
+					if (!tt)
+						parseResult = parseResult + (double.Parse(currentCh.ToString()))/10;
+				}
+				else
+					Error();
+				NextCh();
+				if (currentCh == '.' && tt)
+				{
+					tt = false;
 					NextCh();
 				}
-				else
-					if (currentCh == '.' && tt)	{
-					tt = false;	}
-				else
-				{
-					Error();
-				}
 			}
+
+			if (currentCharValue != -1)
+			{
+				Error();
+			}
+
 			if (isNegative == true)
 			{
 				parseResult *= -1;
