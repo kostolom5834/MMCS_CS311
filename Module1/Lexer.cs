@@ -254,7 +254,6 @@ namespace Lexer
 
 		public override bool Parse()
         {
-			
 			NextCh();
 			if (currentCh == '+' || currentCh == '-')
 			{
@@ -262,7 +261,10 @@ namespace Lexer
 				{ isNegative = true; }
 				NextCh();
 			}
-			NextCh();
+
+			if (currentCharValue == -1)
+				Error();
+
 			while (char.IsDigit(currentCh))
 			{
 				if (char.IsDigit(currentCh))
@@ -274,23 +276,24 @@ namespace Lexer
 				}
 				else
 					Error();
+
 				NextCh();
 				if (currentCh == '.' && tt)
 				{
 					tt = false;
 					NextCh();
+					if (currentCharValue == -1)
+						Error();
 				}
+
+
 			}
 
 			if (currentCharValue != -1)
-			{
 				Error();
-			}
 
 			if (isNegative == true)
-			{
 				parseResult *= -1;
-			}
 			return true;
 		}
        
