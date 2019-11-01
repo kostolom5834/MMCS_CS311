@@ -127,7 +127,8 @@ namespace Lexer
 
         public override bool Parse()
         { 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+
         }
        
     }

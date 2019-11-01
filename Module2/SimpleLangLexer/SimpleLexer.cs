@@ -156,55 +156,71 @@ namespace SimpleLexer
             LexText = "";
             LexRow = row;
             LexCol = col;
-            // Тип лексемы определяется по ее первому символу
-            // Для каждой лексемы строится синтаксическая диаграмма
-            if (currentCh == ';')
-            {
-                NextCh();
-                LexKind = Tok.SEMICOLON;
-            }
-            else if (currentCh == ':')
-            {
-                NextCh();
-                if (currentCh != '=')
-                {
-                    LexError("= was expected");
-                }
-                NextCh();
-                LexKind = Tok.ASSIGN;
-            }
-            else if (char.IsLetter(currentCh))
-            {
-                while (char.IsLetterOrDigit(currentCh))
-                {
-                    NextCh();
-                }
-                if (keywordsMap.ContainsKey(LexText))
-                {
-                    LexKind = keywordsMap[LexText];
-                }
-                else
-                {
-                    LexKind = Tok.ID;
-                }
-            }
-            else if (char.IsDigit(currentCh))
-            {
-                while (char.IsDigit(currentCh))
-                {
-                    NextCh();
-                }
-                LexValue = Int32.Parse(LexText);
-                LexKind = Tok.INUM;
-            }
-            else if ((int)currentCh == 0)
-            {
-                LexKind = Tok.EOF;
-            }
-            else
-            {
-                LexError("Incorrect symbol " + currentCh);
-            }
+			// Тип лексемы определяется по ее первому символу
+			// Для каждой лексемы строится синтаксическая диаграмма
+			if (currentCh == ';')
+			{
+				NextCh();
+				LexKind = Tok.SEMICOLON;
+			}
+			else if (currentCh == ':')
+			{
+				NextCh();
+				if (currentCh != '=')
+				{
+					LexError("= was expected");
+				}
+				NextCh();
+				LexKind = Tok.ASSIGN;
+			}
+			else if (char.IsLetter(currentCh))
+			{
+				while (char.IsLetterOrDigit(currentCh))
+				{
+					NextCh();
+				}
+				if (keywordsMap.ContainsKey(LexText))
+				{
+					LexKind = keywordsMap[LexText];
+				}
+				else
+				{
+					LexKind = Tok.ID;
+				}
+			}
+			else if (char.IsDigit(currentCh))
+			{
+				while (char.IsDigit(currentCh))
+				{
+					NextCh();
+				}
+				LexValue = Int32.Parse(LexText);
+				LexKind = Tok.INUM;
+			}
+			else if ((int)currentCh == 0)
+			{
+				LexKind = Tok.EOF;
+			}
+			else if (currentCh == '=')
+			{
+				NextCh();
+				if (char.IsLetter(currentCh))
+					while (char.IsLetterOrDigit(currentCh))
+					{
+						NextCh();
+					}
+				if (keywordsMap.ContainsKey(LexText))
+				{
+					LexKind = keywordsMap[LexText];
+				}
+				else
+				{ LexKind = Tok.ID; }
+
+			}
+			else
+			{
+				LexError("Incorrect symbol " + currentCh);
+			}
         }
 
         public virtual void ParseToConsole()
