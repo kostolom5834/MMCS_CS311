@@ -126,10 +126,21 @@ namespace Lexer
         }
 
         public override bool Parse()
-        { 
-            //throw new NotImplementedException();
+        {
+			NextCh();
+			if (!(char.IsLetter(currentCh) || currentCh == '_'))
+				Error();
+			NextCh();
 
-        }
+			while (char.IsLetterOrDigit(currentCh) || currentCh == '_' )
+			{
+				NextCh();
+			}
+			if (currentCharValue != -1)
+				Error();
+			parseResult = inputString;
+			return true;
+		}
        
     }
 
