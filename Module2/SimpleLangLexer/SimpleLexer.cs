@@ -185,10 +185,10 @@ namespace SimpleLexer
 				}
 				else
 				{
-					LexKind = Tok.ID;
+					LexKind = Tok.EQ;//
 				}
 			}
-			else if (char.IsDigit(currentCh))
+			else if (char.IsDigit(currentCh))//
 			{
 				while (char.IsDigit(currentCh))
 				{
@@ -197,7 +197,7 @@ namespace SimpleLexer
 				LexValue = Int32.Parse(LexText);
 				LexKind = Tok.INUM;
 			}
-			else if ((int)currentCh == 0)
+			else if ((int)currentCh == 0)//
 			{
 				LexKind = Tok.EOF;
 			}
@@ -214,8 +214,80 @@ namespace SimpleLexer
 					LexKind = keywordsMap[LexText];
 				}
 				else
-				{ LexKind = Tok.ID; }
+				{ LexKind = Tok.EQ; }
 
+			}
+			else if (currentCh == '>')
+			{
+				NextCh();
+				if (currentCh == '=')
+				{
+					LexKind = Tok.GEQ; ;
+					NextCh();
+				}
+				else
+					LexKind = Tok.GT;
+			}
+			else if (currentCh == '+')
+			{
+				NextCh();
+				if (currentCh == '=')
+				{
+					LexKind = Tok.PLUSASSIGN;
+					NextCh();
+				}
+				else
+					LexKind = Tok.PLUS;
+			}
+			else if (currentCh == '-')
+			{
+				NextCh();
+				if (currentCh == '=')
+				{
+					LexKind = Tok.MINUSASSIGN;
+					NextCh();
+				}
+				else
+					LexKind = Tok.MINUS;
+			}
+			else if (currentCh == '*')
+			{
+				NextCh();
+				if (currentCh == '=')
+				{
+					LexKind = Tok.MULTASSIGN;
+					NextCh();
+				}
+				else
+					LexKind = Tok.MULT;
+			}
+			else if (currentCh == '<')
+			{
+				NextCh();
+				if (currentCh == '=')
+				{
+					LexKind = Tok.LEQ; ;
+					NextCh();
+				}
+				else if (currentCh == '>')
+				{
+					LexKind = Tok.NEQ;
+					NextCh();
+				}
+				else
+					LexKind = Tok.LT;
+
+			}
+			else if (currentCh == '/')
+			{
+				NextCh();
+				if (currentCh == '=')
+				{
+					LexKind = Tok.DIVASSIGN;
+					NextCh();
+				}
+				else
+					LexKind = Tok.DIVISION;
 			}
 			else
 			{
