@@ -29,14 +29,25 @@ namespace SimpleLangParser
 
         public void Expr() 
         {
-            if (l.LexKind == Tok.ID || l.LexKind == Tok.INUM)
-            {
-                l.NextLexem();
-            }
-            else
-            {
-                SyntaxError("expression expected");
-            }
+			if (l.LexKind == Tok.ID || l.LexKind == Tok.INUM)
+			{
+				l.NextLexem();
+				if (l.LexKind == Tok.PLUS)
+				{
+					l.NextLexem();
+					Expr();
+				}
+
+				if (l.LexKind == Tok.MINUS)
+				{
+					l.NextLexem();
+					Expr();
+				}
+			}
+			else
+			{
+				SyntaxError("expression expected");
+			}
         }
 
         public void Assign() 
@@ -64,35 +75,72 @@ namespace SimpleLangParser
 
         public void Statement() 
         {
-            switch (l.LexKind)
-            {
-                case Tok.BEGIN:
-                    {
-                        Block(); 
-                        break;
-                    }
-                case Tok.CYCLE:
-                    {
-                        Cycle(); 
-                        break;
-                    }
-                case Tok.ID:
-                    {
-                        Assign();
-                        break;
-                    }
-                default:
-                    {
-                        SyntaxError("Operator expected");
-                        break;
-                    }
-            }
+			switch (l.LexKind)
+			{
+				case Tok.BEGIN:
+					{
+						Block();
+						break;
+					}
+				case Tok.CYCLE:
+					{
+						Cycle();
+						break;
+					}
+				case Tok.ID:
+					{
+						Assign();
+						break;
+					}
+				case Tok.FOR://
+					{
+						For();
+						break;
+					}
+				default:
+					{
+						SyntaxError("Operator expected");
+						break;
+					}
+				
+			}
         }
+		public void For()//
+		{
+			if (l.LexKind != Tok.FOR)
+				SyntaxError("Error for");
+			else
+				l.NextLexem();
+			
+			Assign();
+
+			if (l.LexKind != Tok.TO)
+				SyntaxError("Error to");
+			else
+				l.NextLexem();
+
+			Expr();
+
+			if (l.LexKind != Tok.DO)
+				SyntaxError("Error do");
+			else
+				l.NextLexem();
+
+			if (l.LexKind == Tok.BEGIN)
+				Block();
+			else
+				Statement();
+		}
 
         public void Block() 
         {
+			if (l.LexKind != Tok.BEGIN)
+				SyntaxError("Error begin");
             l.NextLexem();    // пропуск begin
             StatementList();
+			
+			//StatementList();
+
             if (l.LexKind == Tok.END)
             {
                 l.NextLexem();
