@@ -7,7 +7,7 @@
 
 %namespace SimpleParser
 
-%token BEGIN END CYCLE INUM RNUM ID ASSIGN SEMICOLON  
+%token BEGIN END CYCLE INUM RNUM ID ASSIGN SEMICOLON FOR TO DO //for to do
 
 %%
 
@@ -21,6 +21,7 @@ stlist	: statement
 statement: assign
 		| block  
 		| cycle  
+		| for //
 		;
 
 ident 	: ID 
@@ -37,6 +38,9 @@ block	: BEGIN stlist END
 		;
 
 cycle	: CYCLE expr statement 
+		;
+
+for		: FOR assign TO expr DO stlist //
 		;
 	
 %%
