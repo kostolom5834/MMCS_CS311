@@ -4,9 +4,9 @@
 
 // GPPG version 1.5.0
 // Machine:  MIL8A-202A-02
-// DateTime: 29.11.2019 19:16:51
+// DateTime: 20.12.2019 19:15:50
 // UserName: user
-// Input file <SimpleYacc.y - 29.11.2019 19:09:53>
+// Input file <SimpleYacc.y - 20.12.2019 18:50:40>
 
 // options: no-lines gplex
 
@@ -42,10 +42,10 @@ public class ScanObj {
 
 public class Parser: ShiftReduceParser<int, LexLocation>
 {
-  // Verbatim content from SimpleYacc.y - 29.11.2019 19:09:53
+  // Verbatim content from SimpleYacc.y - 20.12.2019 18:50:40
 // Ýòè îáúÿâëåíèÿ äîáàâëÿþòñÿ â êëàññ GPPGParser, ïðåäñòàâëÿþùèé ñîáîé ïàðñåð, ãåíåðèðóåìûé ñèñòåìîé gppg
     public Parser(AbstractScanner<int, LexLocation> scanner) : base(scanner) { }
-  // End verbatim content from SimpleYacc.y - 29.11.2019 19:09:53
+  // End verbatim content from SimpleYacc.y - 20.12.2019 18:50:40
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliasses;

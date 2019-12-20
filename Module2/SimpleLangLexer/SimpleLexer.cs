@@ -103,7 +103,9 @@ namespace SimpleLexer
 			keywordsMap["for"] = Tok.FOR;
 			keywordsMap["to"] = Tok.TO;
 			keywordsMap["do"] = Tok.DO;
-        }
+			keywordsMap["if"] = Tok.IF;
+			keywordsMap["while"] = Tok.WHILE;
+		}
 
         public string FinishCurrentLine()
         {
